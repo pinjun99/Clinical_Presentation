@@ -1,4 +1,4 @@
 interface:
-  display_name: "Vitals Chart Extractor"
+  display_name: "Clinical Vitals Chart Extractor"
   short_description: "Extract vitals charts into review and graph-selection Excel."
-  default_prompt: "Use $vitals-chart-extractor to extract hospital vitals chart photos into a review-first Excel workbook with graph-selection checkbox sheets."
+  default_prompt: "Use $vitals-chart-extractor to extract clinical vitals chart images into a review-first Excel workbook with graph-selection checkbox sheets."

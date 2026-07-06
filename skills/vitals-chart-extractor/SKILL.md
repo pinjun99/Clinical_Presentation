@@ -1,21 +1,21 @@
 ---
 name: vitals-chart-extractor
-description: Extract handwritten or photographed hospital vitals observation charts into review-first Excel workbooks. Use when Codex needs to read clinical observation chart photos or scans containing date, time, BP, pulse, respiratory rate, SpO2, pain score, or similar vitals, create a spreadsheet, highlight uncertain readings, apply date/time sequence sense, support user review, and produce a final sorted workbook.
+description: Extract handwritten or image-based clinical vitals observation charts into review-first Excel workbooks. Use when Codex needs to read clinical observation chart images, scans, or provided chart captures containing date, time, BP, pulse, respiratory rate, SpO2, pain score, or similar vitals, create a spreadsheet, highlight uncertain readings, apply date/time sequence sense, support user review, and produce a final sorted workbook.
 ---
 
 # Vitals Chart Extractor
 
-Use this skill to convert handwritten hospital vitals or observation chart photos into an Excel workbook that is easy for a human to review first, then sort after confirmation, then select rows for later graphing.
+Use this skill to convert handwritten clinical vitals or observation chart images into an Excel workbook that is easy for a human to review first, then sort after confirmation, then select rows for later graphing.
 
 ## Core Principle
 
-Preserve source order before sorting. The first workbook must follow the photo or chart row order so the user can compare Excel rows against the original chart. Sort chronologically only after the user reviews and confirms highlighted cells.
+Preserve source order before sorting. The first workbook must follow the source image or chart row order so the user can compare Excel rows against the original chart. Sort chronologically only after the user reviews and confirms highlighted cells.
 
 ## Output Structure
 
 Create a workbook with these sheets when possible:
 
-- `Review - Photo Order`: rows in the same order as the source photos/chart.
+- `Review - Source Order`: rows in the same order as the provided chart images or source material.
 - `Final - Sorted`: generated only after user confirmation; sorted by Date then Time.
 - Vital selection sheets after final confirmation: `BP`, `Heart Rate`, `Respiratory`, `SpO2`, and `Pain Score`.
 - `Notes`: legend, assumptions, source files, and review status.
@@ -26,7 +26,7 @@ For small or iterative jobs, a single `Vitals Extract` sheet is acceptable, but 
 
 Use these columns unless the user requests otherwise:
 
-- Source Photo
+- Source File
 - Photo Row Number
 - Date
 - Time
@@ -55,7 +55,7 @@ Use these columns:
 
 Use real clickable Excel checkbox cells in `Graph?` when the workbook-writing library supports them. The checkbox value must be readable as `TRUE`/`FALSE` later; Skill 2 will graph only rows where `Graph?` is `TRUE`. If native checkbox cells are not supported, clearly tell the user and use a simple readable fallback such as `TRUE`/`FALSE`.
 
-Date, Time, and vital values should be formula-linked to the final sorted/source sheet where possible so later edits to the confirmed data update the selection sheets automatically. Do not include `Source Photo` or `Notes` on these graph-selection sheets once the data is final; keep traceability columns only in the main vitals sheet.
+Date, Time, and vital values should be formula-linked to the final sorted/source sheet where possible so later edits to the confirmed data update the selection sheets automatically. Do not include `Source File` or `Notes` on these graph-selection sheets once the data is final; keep traceability columns only in the main vitals sheet.
 
 Keep normal Excel gridlines visible. Users need row lines for checking and ticking boxes.
 
@@ -75,11 +75,11 @@ Add a concise explanation in Notes whenever a cell is colored.
 
 Use common sequence sense for Date and Time only. The goal is to reduce the user's review work while still showing assumptions clearly.
 
-If a time appears impossible in row order, make the most reasonable date/time assumption and color the assumed cell blue. Example: if photo order shows `7AM -> 10AM -> 2PM -> 10PM -> 4PM`, and the final handwritten time could plausibly be `11PM`, enter `11PM`, color that Time cell blue, and note: `Assumed 11PM because original looked like 4PM but appears after 10PM in photo order.`
+If a time appears impossible in row order, make the most reasonable date/time assumption and color the assumed cell blue. Example: if source order shows `7AM -> 10AM -> 2PM -> 10PM -> 4PM`, and the final handwritten time could plausibly be `11PM`, enter `11PM`, color that Time cell blue, and note: `Assumed 11PM because original looked like 4PM but appears after 10PM in source order.`
 
 Also color blue when:
 
-- time goes backward within the same date in source/photo order;
+- time goes backward within the same date in source order;
 - date is missing or ambiguous;
 - date jumps unexpectedly compared with surrounding rows;
 - a date/time is inferred from nearby rows.
@@ -100,9 +100,9 @@ Never change a clinical value simply because it seems medically more likely.
 
 ## Workflow
 
-1. Identify all source photos/scans and convert unsupported formats such as HEIC to viewable copies if needed. Do not alter originals.
-2. Read each photo in visible row order. Preserve photo order and source file for every row.
-3. Build the `Review - Photo Order` sheet.
+1. Identify all provided chart images/scans and convert unsupported formats such as HEIC to viewable copies if needed. Do not alter originals.
+2. Read each chart image in visible row order. Preserve source order and source file for every row.
+3. Build the `Review - Source Order` sheet.
 4. Apply the color rules: blue for date/time assumptions or sequence concerns, orange for uncertain clinical values.
 5. Include a `Notes` sheet with the color legend, source list, and caution that handwritten clinical data needs human confirmation.
 6. Ask the user to review colored cells. Do not create the final sorted sheet until the user confirms review is done.
@@ -119,7 +119,7 @@ Never change a clinical value simply because it seems medically more likely.
 Before final delivery, check:
 
 - no unsupported image files remain unread;
-- all extracted rows have source photo and row number;
+- all extracted rows have source file and row number;
 - time format is consistent;
 - date display is human readable;
 - blue/orange cells are cell-specific;
