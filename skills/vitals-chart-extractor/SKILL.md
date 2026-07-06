@@ -5,7 +5,7 @@ description: Extract handwritten or photographed hospital vitals observation cha
 
 # Vitals Chart Extractor
 
-Use this skill to convert handwritten hospital vitals or observation chart photos into an Excel workbook that is easy for a human to review first, then sort after confirmation.
+Use this skill to convert handwritten hospital vitals or observation chart photos into an Excel workbook that is easy for a human to review first, then sort after confirmation, then select rows for later graphing.
 
 ## Core Principle
 
@@ -17,6 +17,7 @@ Create a workbook with these sheets when possible:
 
 - `Review - Photo Order`: rows in the same order as the source photos/chart.
 - `Final - Sorted`: generated only after user confirmation; sorted by Date then Time.
+- Vital selection sheets after final confirmation: `BP`, `Heart Rate`, `Respiratory`, `SpO2`, and `Pain Score`.
 - `Notes`: legend, assumptions, source files, and review status.
 
 For small or iterative jobs, a single `Vitals Extract` sheet is acceptable, but keep the same review-first workflow.
@@ -39,6 +40,26 @@ Use these columns unless the user requests otherwise:
 - Notes
 
 Keep BP as written, and fill Systolic/Diastolic only when both numbers are clear. Use `AM`/`PM` consistently for Time. Store pulse, respiratory, SpO2, and pain score as plain numbers where possible; put units in headers, not in cell values.
+
+## Final Graph Selection Sheets
+
+After the user confirms review and the sorted/final data is ready, add separate vital-specific sheets in the same workbook for graph selection.
+
+Use these columns:
+
+- `BP`: Graph?, Date, Time, BP (mmHg), Systolic, Diastolic
+- `Heart Rate`: Graph?, Date, Time, Pulse (bpm)
+- `Respiratory`: Graph?, Date, Time, Respiratory (breaths/min)
+- `SpO2`: Graph?, Date, Time, SpO2 (%)
+- `Pain Score`: Graph?, Date, Time, Pain Score (0-10)
+
+Use real clickable Excel checkbox cells in `Graph?` when the workbook-writing library supports them. The checkbox value must be readable as `TRUE`/`FALSE` later; Skill 2 will graph only rows where `Graph?` is `TRUE`. If native checkbox cells are not supported, clearly tell the user and use a simple readable fallback such as `TRUE`/`FALSE`.
+
+Date, Time, and vital values should be formula-linked to the final sorted/source sheet where possible so later edits to the confirmed data update the selection sheets automatically. Do not include `Source Photo` or `Notes` on these graph-selection sheets once the data is final; keep traceability columns only in the main vitals sheet.
+
+Keep normal Excel gridlines visible. Users need row lines for checking and ticking boxes.
+
+Keep the `Notes` sheet short after final confirmation: include only the color legend if still relevant, checkbox meaning, Skill 2 read rule, and a brief clinical caution.
 
 ## Color Rules
 
@@ -89,8 +110,9 @@ Never change a clinical value simply because it seems medically more likely.
 8. Treat the user-edited workbook as the source of truth.
 9. Re-check date/time sequence. If issues remain, highlight them blue and report them.
 10. Create `Final - Sorted` sorted by Date then Time, or update the final workbook if the user explicitly wants a single sheet.
-11. Verify Date cells display as human-readable dates such as `d/m`, not Excel serial numbers like `46175`.
-12. Verify formulas/errors/rendering before final delivery.
+11. Create the five vital-specific graph-selection sheets with readable native checkboxes in `Graph?`.
+12. Verify Date cells display as human-readable dates such as `d/m`, not Excel serial numbers like `46175`.
+13. Verify formulas/errors/rendering before final delivery.
 
 ## Review Checks
 
@@ -103,6 +125,9 @@ Before final delivery, check:
 - blue/orange cells are cell-specific;
 - Notes explains each assumption or uncertainty;
 - final sorted sheet has no backward time jumps within the same date unless intentionally flagged.
+- graph-selection sheets contain only Date, Time, the relevant vital value(s), and a readable checkbox column;
+- checkbox cells can be read later as `TRUE`/`FALSE`;
+- normal gridlines are visible unless the user explicitly asks for a print-style worksheet.
 
 ## Safety
 
