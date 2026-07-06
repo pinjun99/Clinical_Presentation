@@ -14,7 +14,7 @@ Each skill lives under `skills/<skill-name>/` and should contain:
 
 ## Skills
 
-- `vitals-chart-extractor`: Extract handwritten hospital vitals observation charts into review-first Excel workbooks.
+- `vitals-chart-extractor`: Extract handwritten or image-based clinical vitals observation charts into review-first Excel workbooks.
 
 ## Install Locally
 
@@ -28,9 +28,9 @@ cp -R skills/vitals-chart-extractor ~/.codex/skills/
 Then start a new Codex session and invoke it with:
 
 ```text
-Use $vitals-chart-extractor on these vitals chart photos and make me an Excel file.
+Use $vitals-chart-extractor on these clinical vitals chart images and make me an Excel file.
 ```
 
 ## Development Notes
 
-Keep skill folders lean. Put reusable code in `scripts/` only when it improves reliability or reduces repeated manual work. For clinical handwriting tasks, scripts should handle workbook mechanics, validation, formatting, sorting, and backups; Codex should still make the visual judgement calls and clearly mark assumptions for human review.
+Keep skill folders lean. Put reusable code in `scripts/` only when it improves reliability or reduces repeated manual work. For clinical handwriting tasks, scripts should handle workbook mechanics, validation, formatting, sorting, backups, and graph-selection sheet setup; Codex should still make the visual judgement calls and clearly mark assumptions for human review.
