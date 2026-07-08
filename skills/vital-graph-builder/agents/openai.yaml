@@ -1,0 +1,4 @@
+interface:
+  display_name: "Clinical Vital Graph Builder"
+  short_description: "Draw native Excel charts from ticked vital graph-selection rows."
+  default_prompt: "Use $vital-graph-builder to rebuild the per-vital Excel charts from the ticked Graph? rows in the vitals workbook."

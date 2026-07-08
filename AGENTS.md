@@ -2,11 +2,14 @@
 
 This repository contains personal Codex skills. Keep skill folders lean and focused on instructions or reusable helpers that directly improve the skill.
 
-## Current Skill
+## Current Skills
 
 - Internal skill name: `vitals-chart-extractor`
-- User-facing display name: `Clinical Vitals Chart Extractor`
-- Purpose: extract handwritten or image-based clinical vitals observation charts into review-first Excel workbooks, then create final sorted and graph-selection sheets.
+  - User-facing display name: `Clinical Vitals Chart Extractor`
+  - Purpose: extract handwritten or image-based clinical vitals observation charts into review-first Excel workbooks, then create final sorted and graph-selection sheets.
+- Internal skill name: `vital-graph-builder`
+  - User-facing display name: `Clinical Vital Graph Builder`
+  - Purpose: read the ticked `Graph?` rows on the vital graph-selection sheets and draw native Excel charts on each vital's sheet - a BP double-arrow chart (error-bar based) and single-colour line charts, all with data tables and visible axes.
 
 ## Wording
 
